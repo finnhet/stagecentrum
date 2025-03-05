@@ -12,7 +12,9 @@ class VacancyController extends Controller
     public function userVacancies()
     {
         $companyId = Auth::user()->id;
-        $vacancies = Vacancy::where('id', $companyId)->get();
+        
+        $vacancies = Vacancy::where('company_id', $companyId)->get();
+
         return view('dashboard', compact('vacancies'));
     }
     public function view(Request $request)
@@ -27,6 +29,7 @@ class VacancyController extends Controller
     }
     public function store(Request $request)
     {
+        $companyId = Auth::user()->id;
         // Validate the input
         $request->validate([
             'title' => 'required|string|max:255',
@@ -41,9 +44,8 @@ class VacancyController extends Controller
             'introduction' => $request->introduction,
             'description' => $request->description,
             'location' => $request->location,
-            'field_id' => 1,
-            'company_id' => 1
+            'company_id' => $companyId,
         ]);
-        return view('vacancy_create');
+        return redirect()->route('dashboard');
     }
 }

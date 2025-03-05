@@ -22,10 +22,10 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/vacancy_create', function () {
     return view('vacancy_create');
-});
-
-Route::get('/users', [VacancyController::class, 'view'])->name('users.show');
+})->name('vacancy_create');
 
 Route::post('/vacancy_create', [VacancyController::class, 'store']);
+
+Route::get('/users', [VacancyController::class, 'view'])->name('users.show');
 
 require __DIR__.'/auth.php';
