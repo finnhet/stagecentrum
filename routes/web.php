@@ -9,9 +9,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [VacancyController::class, 'userVacancies'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -23,7 +24,7 @@ Route::get('/vacancy_create', function () {
     return view('vacancy_create');
 });
 
-Route::get('/users', [VacancyController::class, 'index'])->name('users.show');
+Route::get('/users', [VacancyController::class, 'view'])->name('users.show');
 
 Route::post('/vacancy_create', [VacancyController::class, 'store']);
 
