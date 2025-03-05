@@ -23,11 +23,8 @@ Route::get('/vacancy_create', function () {
     return view('vacancy_create');
 });
 
-
+Route::get('/users', [VacancyController::class, 'index'])->name('users.show');
 
 Route::post('/vacancy_create', [VacancyController::class, 'store']);
-
-
-Route::get('/users', [UserController::class, 'show'])->name('users.show');
 
 require __DIR__.'/auth.php';

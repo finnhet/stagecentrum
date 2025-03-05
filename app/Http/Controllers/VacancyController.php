@@ -3,10 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Vacancy;
 
 class VacancyController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $companyId = $request->query('id');
+
+        $user = User::where('id', $companyId)->first();
+
+        $vacancies = Vacancy::where('company_id', $companyId)->get();
+
+        return view('users.show', compact('user', 'vacancies'));
+    }
     public function store(Request $request)
     {
         // Validate the input
