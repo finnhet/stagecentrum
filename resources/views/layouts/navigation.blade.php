@@ -16,7 +16,7 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('vacancy_create')" :active="request()->routeIs('vacancy_create')">
-                        {{ __('Create Vacancy') }}
+                        {{ __('Vacature aanmaken') }}
                     </x-nav-link>
                 </div>
             </div>

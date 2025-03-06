@@ -7,7 +7,7 @@
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <br>
-        <h2 class="text-2xl font-bold mt-8 mb-6 text-blue-700">Your Vacancies</h2>
+        <h2 class="text-2xl font-bold mt-8 mb-6 text-blue-700">U vacatures</h2>
 
         @if(isset($vacancies) && $vacancies->isNotEmpty())
             <div class="space-y-6">

@@ -4,7 +4,7 @@
 
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="name" :value="__('Naam')" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
@@ -18,7 +18,7 @@
 
         <!-- Telephone -->
         <div class="mt-4">
-            <x-input-label for="telephone" :value="__('Telephone')" />
+            <x-input-label for="telephone" :value="__('Telefoon nummer')" />
             <x-text-input id="telephone" class="block mt-1 w-full" type="tel" name="telephone" :value="old('telephone')" required autocomplete="tel" />
             <x-input-error :messages="$errors->get('telephone')" class="mt-2" />
         </div>
@@ -26,7 +26,7 @@
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="__('Wachtwoord')" />
 
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
@@ -38,7 +38,7 @@
 
         <!-- Confirm Password -->
         <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <x-input-label for="password_confirmation" :value="__('Bevestig het wachtwoord')" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
                             type="password"
@@ -53,7 +53,7 @@
             </a>
 
             <x-primary-button class="ms-4">
-                {{ __('Register') }}
+                {{ __('Registreer') }}
             </x-primary-button>
         </div>
     </form>
