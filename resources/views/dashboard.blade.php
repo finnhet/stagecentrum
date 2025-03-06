@@ -14,7 +14,7 @@
                 @foreach($vacancies as $vacancy)
                     <div class="bg-blue-100 p-6 rounded-lg shadow">
                         <h3 class="text-xl font-semibold text-blue-800">{{ $vacancy->title }}</h3>
-                        <p class="text-gray-700">{{ $vacancy->description }}</p>
+                        <p class="text-gray-700">{{ $vacancy->introduction }}</p>
                         <p class="text-gray-500 text-sm">Location: {{ $vacancy->location }}</p>
                     </div>
                 @endforeach
