@@ -27,6 +27,21 @@ class VacancyController extends Controller
 
         return view('users.show', compact('user', 'vacancies'));
     }
+
+    public function edit($id)
+    {
+        // findorfail is om te checken of the primary key bestaat
+        $vacancy = Vacancy::findOrFail($id);
+        // if statement checked of de vacature wel gekoppeld is aan de gebruiker
+        $companyId = Auth::user()->id;
+        if ($vacancy->company_id !== $companyId) {
+            return redirect()->route('dashboard');
+        } else {
+            return view('vacancy-edit', compact('vacancy'));
+        }
+    }
+
+
     public function store(Request $request)
     {
         $companyId = Auth::user()->id;
@@ -47,5 +62,26 @@ class VacancyController extends Controller
             'company_id' => $companyId,
         ]);
         return redirect()->route('dashboard');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'introduction' => 'required|string|max:255',
+            'description' => 'required|string',
+            'location' => 'required|string|max:255',
+        ]);
+
+        $vacancy = Vacancy::findOrFail($id);
+
+        $vacancy->update([
+            'title' => $request->title,
+            'introduction' => $request->introduction,
+            'description' => $request->description,
+            'location' => $request->location,
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Vacancy updated successfully!');
     }
 }

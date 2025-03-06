@@ -4,23 +4,30 @@
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
-
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <br>
-        <h2 class="text-2xl font-bold mt-8 mb-6 text-blue-700">U vacatures</h2>
+    <!-- bootstrap maar toegevoegd want grid systeem van tailwind geeft me aids -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <div class="container mt-5">
+        <h2 class="text-primary fw-bold mb-4">Uw vacatures</h2>
 
         @if(isset($vacancies) && $vacancies->isNotEmpty())
-            <div class="space-y-6">
+            <div class="row g-4">
                 @foreach($vacancies as $vacancy)
-                    <div class="bg-blue-100 p-6 rounded-lg shadow">
-                        <h3 class="text-xl font-semibold text-blue-800">{{ $vacancy->title }}</h3>
-                        <p class="text-gray-700">{{ $vacancy->introduction }}</p>
-                        <p class="text-gray-500 text-sm">Location: {{ $vacancy->location }}</p>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card bg-light border-0 shadow-sm p-4 position-relative">
+                            <h3 class="card-title text-primary">{{ $vacancy->title }}</h3>
+                            <p class="card-text text-muted">{{ $vacancy->introduction }}</p>
+                            <p class="card-text small text-secondary">Locatie: {{ $vacancy->location }}</p>
+
+                            <a href="{{ route('vacancy.edit', ['id' => $vacancy->id]) }}" 
+                               class="btn btn-primary position-absolute top-0 end-0 m-3">
+                                Edit
+                            </a>
+                        </div>
                     </div>
                 @endforeach
             </div>
         @else
-            <p class="text-gray-700">Uw heeft nog geen vacatures.</p>
+            <p class="text-muted">U heeft nog geen vacatures.</p>
         @endif
     </div>
 </x-app-layout>
