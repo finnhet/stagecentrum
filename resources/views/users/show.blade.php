@@ -20,7 +20,7 @@
             <p class="mb-4"><strong>Telefoon:</strong> {{ $user->telephone }}</p>
             <p class="mb-4"><strong>Beschrijving:</strong> {{ $user->description }}</p>
         @else
-            <p class="text-gray-700">No user data available.</p>
+            <p class="text-gray-700">Geen user data beschikbaar.</p>
         @endif
 
         <h2 class="text-2xl font-bold mt-8 mb-6 text-blue-700">Vacancies</h2>
@@ -29,7 +29,7 @@
             <div class="bg-blue-100 p-6 rounded-lg shadow">
                 <h3 class="text-xl font-semibold text-blue-800">{{ $vacancy->title }}</h3>
                 <p class="text-gray-700">{{ $vacancy->description }}</p>
-                <p class="text-gray-500 text-sm">Location: {{ $vacancy->location }}</p>
+                <p class="text-gray-500 text-sm">Locatie {{ $vacancy->location }}</p>
             </div>
         @empty
             <p class="text-gray-700">geen vacatures beschikbaar voor dit bedrijf.</p>
