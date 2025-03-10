@@ -19,8 +19,8 @@
                             <p class="card-text small text-secondary">Locatie: {{ $vacancy->location }}</p>
 
                             <a href="{{ route('vacancy.edit', ['id' => $vacancy->id]) }}" 
-                               class="btn btn-primary position-absolute top-0 end-0 m-3">
-                                Edit
+                               class="btn btn-primary position-flex flex-direction column">
+                                Bewerk
                             </a>
                         </div>
                     </div>
