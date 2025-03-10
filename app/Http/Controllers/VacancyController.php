@@ -64,6 +64,14 @@ class VacancyController extends Controller
         return redirect()->route('dashboard');
     }
 
+    public function destroy($id)
+{
+    $vacancy = Vacancy::findOrFail($id);
+    $vacancy->delete();
+
+    return redirect()->route('dashboard')->with('success', 'Vacature succesvol verwijderd.');
+}
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -85,3 +93,4 @@ class VacancyController extends Controller
         return redirect()->route('dashboard')->with('success', 'Vacancy updated successfully!');
     }
 }
+

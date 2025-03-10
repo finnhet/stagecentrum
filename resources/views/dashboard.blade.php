@@ -4,7 +4,7 @@
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
-    <!-- bootstrap maar toegevoegd want grid systeem van tailwind geeft me aids -->
+    <!-- Bootstrap toegevoegd -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <div class="container mt-5">
         <h2 class="text-primary fw-bold mb-4">Uw vacatures</h2>
@@ -18,10 +18,22 @@
                             <p class="card-text text-muted">{{ $vacancy->introduction }}</p>
                             <p class="card-text small text-secondary">Locatie: {{ $vacancy->location }}</p>
 
-                            <a href="{{ route('vacancy.edit', ['id' => $vacancy->id]) }}" 
-                               class="btn btn-primary position-flex flex-direction column">
-                                Bewerk
-                            </a>
+                            <div class="d-flex gap-2">
+                                
+                                <a href="{{ route('vacancy.edit', ['id' => $vacancy->id]) }}" 
+                                   class="btn btn-primary">
+                                    Bewerk
+                                </a>
+
+                                <form action="{{ route('vacancy.destroy', ['id' => $vacancy->id]) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" 
+                                            onclick="return confirm('Weet u zeker dat u deze vacature wilt verwijderen?');">
+                                        Verwijder
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 @endforeach

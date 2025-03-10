@@ -27,8 +27,11 @@ Route::post('/vacancy_create', [VacancyController::class, 'store']);
 
 Route::get('/vacancy/{id}/edit', [VacancyController::class, 'edit'])->name('vacancy.edit');
 
+Route::delete('/vacancy/{id}', [VacancyController::class, 'destroy'])->name('vacancy.destroy');
+
 Route::put('/vacancy/{id}', [VacancyController::class, 'update'])->name('vacancy.update');
 
 Route::get('/users', [VacancyController::class, 'view'])->name('users.show');
+
 
 require __DIR__.'/auth.php';
