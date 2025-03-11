@@ -51,24 +51,27 @@ class VacancyController extends Controller
     public function store(Request $request)
     {
         $companyId = Auth::user()->id;
-        // Validate the input
+    
         $request->validate([
             'title' => 'required|string|max:255',
             'introduction' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
+            'field_id' => 'required|exists:fields,id', 
         ]);
-
-        // Save to the database
+    
         Vacancy::create([
             'title' => $request->title,
             'introduction' => $request->introduction,
             'description' => $request->description,
             'location' => $request->location,
+            'field_id' => $request->field_id,
             'company_id' => $companyId,
         ]);
-        return redirect()->route('dashboard');
+    
+        return redirect()->route('dashboard')->with('success', 'Vacature succesvol aangemaakt.');
     }
+    
 
     public function destroy($id)
 {

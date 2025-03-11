@@ -19,8 +19,10 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/vacancy_create', function () {
-    return view('vacancy_create');
+    $fields = \App\Models\Field::all();
+    return view('vacancy_create', compact('fields'));
 })->name('vacancy_create');
+
 
 Route::post('/vacancy_create', [VacancyController::class, 'store']);
 

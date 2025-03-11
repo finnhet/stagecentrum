@@ -16,5 +16,6 @@ class Vacancy extends Model
         'description',
         'location',
         'company_id',
+        'field_id',
     ];
 }

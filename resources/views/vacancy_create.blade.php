@@ -32,6 +32,16 @@
             <input type="text" class="form-control" id="inputLocation" name="location" placeholder="Locatie" required>
           </div>
 
+          <div class="col-12">
+            <label for="fieldSelect" class="form-label">Werkveld</label>
+            <select class="form-control" id="fieldSelect" name="field_id" required>
+              <option value="" disabled selected>Selecteer een werkveld</option>
+              @foreach ($fields as $field)
+                <option value="{{ $field->id }}">{{ $field->name }}</option>
+              @endforeach
+            </select>
+          </div>
+
           <div class="col-12 text-center">
             <button type="submit" class="btn btn-primary w-100">Vacature Aanmaken</button>
           </div>
