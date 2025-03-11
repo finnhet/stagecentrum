@@ -3,10 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VacancyController;
+use App\Http\Controllers\FieldController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [FieldController::class, 'index']);
 
 Route::get('/dashboard', [VacancyController::class, 'userVacancies'])
     ->middleware(['auth', 'verified'])
