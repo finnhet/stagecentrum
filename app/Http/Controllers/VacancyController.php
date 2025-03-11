@@ -28,6 +28,12 @@ class VacancyController extends Controller
         return view('users.show', compact('user', 'vacancies'));
     }
 
+    public function vacanciesByField($fieldId)
+    {
+        $vacancies = Vacancy::where('field_id', $fieldId)->get();
+        return view('vacancies', compact('vacancies'));
+    }
+
     public function edit($id)
     {
         // findorfail is om te checken of the primary key bestaat

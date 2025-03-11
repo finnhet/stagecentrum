@@ -15,7 +15,8 @@
                         <h5 class="card-title font-weight-bold">{{ $field->name }}</h5>
                         <p class="card-text text-muted">
                         </p>
-                        <a href="#" class="btn btn-primary btn-sm mt-2">meer</a>
+                        <a href="{{ route('vacancies.byField', $field->id) }}" class="btn btn-info">vacatures</a>
+
                     </div>
                 </div>
             </div>
