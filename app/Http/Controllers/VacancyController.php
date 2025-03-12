@@ -140,10 +140,10 @@ class VacancyController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'introduction' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'required|string|max:255',
+            'title' => 'required|string|max:100',
+            'introduction' => 'required|string|max:150',
+            'description' => 'required|string|max:250',
+            'location' => 'required|string|max:50',
         ]);
 
         $vacancy = Vacancy::findOrFail($id);
