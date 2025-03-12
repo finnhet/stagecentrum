@@ -18,11 +18,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/vacancy_create', function () {
-    $fields = \App\Models\Field::all();
-    return view('vacancy_create', compact('fields'));
-})->name('vacancy_create');
+Route::get('/vacancy_create', [VacancyController::class, 'create'])->name('vacancy_create');
 
+Route::get('/get-filters/{fieldId}', [VacancyController::class, 'getFilters']);
 
 Route::post('/vacancy_create', [VacancyController::class, 'store']);
 

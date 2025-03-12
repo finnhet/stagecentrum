@@ -21,7 +21,7 @@ class Vacancy extends Model
 
     public function filters()
     {
-        return $this->belongsToMany(Filter::class, 'vacancy_filters', 'vacancy_id', 'filter_id')
-            ->withPivot('vacancy_id', 'filter_id');
-    }    
+        return $this->belongsToMany(Filter::class, 'vacancy_filters', 'vacancy_id', 'filter_id');
+    }
+      
 }
