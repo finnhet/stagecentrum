@@ -32,9 +32,13 @@ Route::delete('/vacancy/{id}', [VacancyController::class, 'destroy'])->name('vac
 
 Route::put('/vacancy/{id}', [VacancyController::class, 'update'])->name('vacancy.update');
 
-Route::get('/werkveld/{fieldId}/vacatures', [VacancyController::class, 'vacanciesByField'])->name('vacancies.byField');
+Route::get('/werkveld/{fieldId}/vacatures', [VacancyController::class, 'index'])->name('vacancies.byField');
 
-Route::get('/vacancy/{id}', [VacancyController::class, 'show']);
+Route::get('/werkveld/{fieldId}/vacatures/filter', [VacancyController::class, 'filterVacancies'])->name('vacancies.filter');
+
+Route::get('/vacatures/{id}', [VacancyController::class, 'show'])->name('vacancy.show');
+
+Route::get('/vacancy/{id}', [VacancyController::class, 'show'])->name('vacancy.show');
 
 Route::get('/users', [VacancyController::class, 'view'])->name('users.show');
 

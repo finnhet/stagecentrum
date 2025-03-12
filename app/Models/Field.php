@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,4 +9,9 @@ class Field extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    public function filters()
+    {
+        return $this->hasMany(Filter::class);
+    }
 }

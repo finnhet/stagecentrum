@@ -6,9 +6,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Vacancy;
+use App\Models\Filter;
+use App\Models\Field;
 
 class VacancyController extends Controller
 {
+    public function index($fieldId)
+{
+    $filters = Filter::where('field_id', $fieldId)->get();
+    $vacancies = Vacancy::where('field_id', $fieldId)->get();
+
+    return view('vacancies', compact('vacancies', 'filters', 'fieldId'));
+}
+ 
     public function userVacancies()
     {
         $companyId = Auth::user()->id;
@@ -28,10 +38,38 @@ class VacancyController extends Controller
         return view('users.show', compact('user', 'vacancies'));
     }
 
-    public function vacanciesByField($fieldId)
+    public function vacanciesByField($fieldId, Request $request)
     {
-        $vacancies = Vacancy::where('field_id', $fieldId)->get();
-        return view('vacancies', compact('vacancies'));
+        $filters = Filter::where('field_id', $fieldId)->get();
+    
+        $vacancies = Vacancy::where('field_id', $fieldId);
+    
+        if ($request->has('filter')) {
+            $vacancies->whereHas('filters', function ($query) use ($request) {
+                $query->whereIn('filters.id', $request->filter);
+            });
+        }
+    
+        $vacancies = $vacancies->get();
+    
+        return view('vacancies', compact('vacancies', 'filters', 'fieldId'));
+    }
+
+    public function filterVacancies(Request $request, $fieldId)
+    {
+        $selectedFilters = $request->input('filters', []);
+        $filters = Filter::where('field_id', $fieldId)->get();
+    
+        if (!empty($selectedFilters)) {
+            $vacancies = Vacancy::where('field_id', $fieldId)
+                ->whereHas('filters', function ($query) use ($selectedFilters) {
+                    $query->whereIn('filters.id', $selectedFilters);
+                })->get();
+        } else {
+            $vacancies = Vacancy::where('field_id', $fieldId)->get();
+        }
+    
+        return view('vacancies', compact('vacancies', 'filters', 'fieldId'));
     }
 
     public function edit($id)

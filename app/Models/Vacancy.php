@@ -18,4 +18,10 @@ class Vacancy extends Model
         'company_id',
         'field_id',
     ];
+
+    public function filters()
+    {
+        return $this->belongsToMany(Filter::class, 'vacancy_filters', 'vacancy_id', 'filter_id')
+            ->withPivot('vacancy_id', 'filter_id');
+    }    
 }
