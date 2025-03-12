@@ -56,18 +56,20 @@ class VacancyController extends Controller
     {
         $selectedFilters = $request->input('filters', []);
         $filters = Filter::where('field_id', $fieldId)->get();
-
+    
         if (!empty($selectedFilters)) {
             $vacancies = Vacancy::where('field_id', $fieldId)
                 ->whereHas('filters', function ($query) use ($selectedFilters) {
                     $query->whereIn('filters.id', $selectedFilters);
-                })->get();
+                }, '=', count($selectedFilters))
+                ->get();
         } else {
             $vacancies = Vacancy::where('field_id', $fieldId)->get();
         }
-
+    
         return view('vacancies', compact('vacancies', 'filters', 'fieldId'));
     }
+    
 
     public function edit($id)
     {
