@@ -30,6 +30,29 @@
                     </div>
                 </form>
 
+                <div class="border p-3 rounded bg-light mb-3">
+                    <h5 class="text-center mb-2">Selecteer Filters</h5>
+                    <div id="filtersContainer" class="row g-2">
+                        @forelse ($filters as $filter)
+                            <div class="col-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="filters[]" value="{{ $filter->id }}" id="filter{{ $filter->id }}">
+                                    <label class="form-check-label" for="filter{{ $filter->id }}">{{ $filter->name }}</label>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-center text-muted">Geen filters beschikbaar.</p>
+                        @endforelse
+                    </div>
+
+                    <div class="mt-3 d-flex gap-2">
+                        <input type="text" id="newFilterName" class="form-control" placeholder="Nieuwe filter toevoegen">
+                        <button type="button" id="addFilterBtn" class="btn text-white" style="background-color: rgb(0, 0, 108);">
+                            Toevoegen
+                        </button>
+                    </div>
+                </div>
+
                 <form class="row g-3 mt-3" action="{{ url('/vacancy_create') }}" method="POST">
                     @csrf
                     <input type="hidden" name="field_id" value="{{ $selectedFieldId }}">
@@ -51,30 +74,10 @@
                         <input type="text" class="form-control" id="inputLocation" name="location" placeholder="Locatie" maxlength="50" required>
                     </div>
 
-                    <h5 class="text-center mt-4">Selecteer Filters</h5>
-                    
-                    <div id="filtersContainer" class="row g-2">
-                        @forelse ($filters as $filter)
-                            <div class="col-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="filters[]" value="{{ $filter->id }}" id="filter{{ $filter->id }}">
-                                    <label class="form-check-label" for="filter{{ $filter->id }}">{{ $filter->name }}</label>
-                                </div>
-                            </div>
-                        @empty
-                            <p class="text-center text-muted">Geen filters beschikbaar.</p>
-                        @endforelse
-                    </div>
-
-                    <div class="mt-3">
-                        <div class="input-group">
-                            <input type="text" id="newFilterName" class="form-control" placeholder="Nieuwe filter toevoegen">
-                            <button type="button" id="addFilterBtn" class="btn btn-success">Toevoegen</button>
-                        </div>
-                    </div>
-
                     <div class="col-12 text-center mt-4">
-                        <button type="submit" class="btn btn-primary w-100">Vacature Aanmaken</button>
+                        <button type="submit" class="btn text-white w-100" style="background-color: rgb(0, 0, 108);">
+                            Vacature Aanmaken
+                        </button>
                     </div>
                 </form>
             </div>
@@ -116,9 +119,8 @@
                     let data = await response.json();
 
                     if (data.id) {
-                        // Create new filter element
                         let newFilter = document.createElement("div");
-                        newFilter.classList.add("col-6", "fade-in");
+                        newFilter.classList.add("col-4", "fade-in");
 
                         newFilter.innerHTML = `
                             <div class="form-check">
@@ -156,3 +158,4 @@
 </body>
 
 </html>
+ 
