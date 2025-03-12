@@ -118,6 +118,7 @@ class VacancyController extends Controller
         return redirect()->route('dashboard')->with('success', 'Vacature succesvol aangemaakt.');
     }
 
+
     public function getVacancyById(Request $request)
     {
         $request->validate([

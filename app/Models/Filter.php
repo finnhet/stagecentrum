@@ -17,6 +17,6 @@ class Filter extends Model
 
     public function vacancies()
     {
-        return $this->belongsToMany(Vacancy::class, 'vacancy_filters', 'filter_id', 'vacancy_id');
+        return $this->belongsToMany(Vacancy::class, 'vacancy_filters');
     }
 }

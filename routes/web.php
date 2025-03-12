@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VacancyController;
 use App\Http\Controllers\FieldController;
+use App\Http\Controllers\FilterController;
+
 
 Route::get('/', [FieldController::class, 'index']);
 
@@ -17,6 +19,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::post('/filters/create', [FilterController::class, 'store'])->name('filters.store');
 
 Route::get('/vacancy_create', [VacancyController::class, 'create'])->name('vacancy_create');
 
