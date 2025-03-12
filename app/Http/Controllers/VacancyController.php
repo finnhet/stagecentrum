@@ -71,7 +71,25 @@ class VacancyController extends Controller
     
         return redirect()->route('dashboard')->with('success', 'Vacature succesvol aangemaakt.');
     }
-    
+    public function getVacancyById(Request $request)
+    {
+        $request->validate([
+            "id" => "required|integer|exists:vacancies,id"
+        ]);
+        $vacancy = Vacancy::find($request->id);
+        
+        
+            
+
+        return view('/vacancy', compact('vacancy'));
+    }
+    public function show($id)
+    {    
+        $vacancy = Vacancy::findOrFail($id); // Fetch vacancy by ID or show 404
+        $user = User::where('id', $vacancy->company_id)->first();
+        return view('vacancy', compact('vacancy', 'user'));
+    }
+
 
     public function destroy($id)
 {

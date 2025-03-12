@@ -34,7 +34,10 @@ Route::put('/vacancy/{id}', [VacancyController::class, 'update'])->name('vacancy
 
 Route::get('/werkveld/{fieldId}/vacatures', [VacancyController::class, 'vacanciesByField'])->name('vacancies.byField');
 
+Route::get('/vacancy/{id}', [VacancyController::class, 'show']);
+
 Route::get('/users', [VacancyController::class, 'view'])->name('users.show');
 
+Route::post('/vacancy', [VacancyController::class, 'getVacancyById']);
 
 require __DIR__.'/auth.php';
