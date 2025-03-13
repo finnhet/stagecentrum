@@ -69,12 +69,12 @@
                     <div class="mt-3">
                         <div class="input-group">
                             <input type="text" id="newFilterName" class="form-control" placeholder="Nieuwe filter toevoegen">
-                            <button type="button" id="addFilterBtn" class="btn btn-success">Toevoegen</button>
+                            <button type="button" id="addFilterBtn" class="btn btn-success" style="background-color: rgb(0, 0, 108);">Toevoegen</button>
                         </div>
                     </div>
 
                     <div class="col-12 text-center mt-4">
-                        <button type="submit" class="btn btn-primary w-100">Vacature Aanmaken</button>
+                        <button type="submit" class="btn btn-primary w-100"  style="background-color: rgb(0, 0, 108);">Vacature Aanmaken</button>
                     </div>
                 </form>
             </div>
@@ -116,7 +116,6 @@
                     let data = await response.json();
 
                     if (data.id) {
-                        // Create new filter element
                         let newFilter = document.createElement("div");
                         newFilter.classList.add("col-6", "fade-in");
 
