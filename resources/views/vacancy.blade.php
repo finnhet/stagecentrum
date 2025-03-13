@@ -41,7 +41,7 @@
                 <p><strong>Beschrijving:</strong></p>
                 <p>{{ $vacancy->description }}</p>
                 <div class="d-flex justify-content-between">
-                    <a href="/vacancies" class="btn btn-secondary">Terug naar vacatures</a>  
+                    <a onclick="history.back();" class="btn btn-secondary">Terug naar vacatures</a>
                 </div>   
             </div>
         </div>
