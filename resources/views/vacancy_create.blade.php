@@ -34,23 +34,6 @@
                     @csrf
                     <input type="hidden" name="field_id" value="{{ $selectedFieldId }}">
 
-                    <div class="col-12">
-                        <label for="inputTitle" class="form-label">Titel</label>
-                        <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Titel" maxlength="100" required>
-                    </div>
-                    <div class="col-12">
-                        <label for="inputIntroduction" class="form-label">Introductie</label>
-                        <input type="text" class="form-control" id="inputIntroduction" name="introduction" placeholder="Introductie" maxlength="150" required>
-                    </div>
-                    <div class="col-12">
-                        <label for="inputDescription" class="form-label">Beschrijving</label>
-                        <textarea class="form-control" id="inputDescription" name="description" rows="3" placeholder="Beschrijving" maxlength="250" required></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label for="inputLocation" class="form-label">Locatie</label>
-                        <input type="text" class="form-control" id="inputLocation" name="location" placeholder="Locatie" maxlength="50" required>
-                    </div>
-
                     <h5 class="text-center mt-4">Selecteer Filters</h5>
                     
                     <div id="filtersContainer" class="row g-2">
@@ -73,6 +56,22 @@
                         </div>
                     </div>
 
+                    <div class="col-12">
+                        <label for="inputTitle" class="form-label">Titel</label>
+                        <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Titel" maxlength="100" required>
+                    </div>
+                    <div class="col-12">
+                        <label for="inputIntroduction" class="form-label">Introductie</label>
+                        <input type="text" class="form-control" id="inputIntroduction" name="introduction" placeholder="Introductie" maxlength="150" required>
+                    </div>
+                    <div class="col-12">
+                        <label for="inputDescription" class="form-label">Beschrijving</label>
+                        <textarea class="form-control" id="inputDescription" name="description" rows="3" placeholder="Beschrijving" maxlength="250" required></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label for="inputLocation" class="form-label">Locatie</label>
+                        <input type="text" class="form-control" id="inputLocation" name="location" placeholder="Locatie" maxlength="50" required>
+                    </div>
                     <div class="col-12 text-center mt-4">
                         <button type="submit" class="btn btn-primary w-100"  style="background-color: rgb(0, 0, 108);">Vacature Aanmaken</button>
                     </div>
