@@ -172,11 +172,7 @@
 
                     if (data.id) {
                         let newFilter = document.createElement("div");
-<<<<<<< HEAD
-                        newFilter.classList.add("col-4", "fade-in");
-=======
                         newFilter.classList.add("col-6", "filter-item", "fade-in");
->>>>>>> 2fae9d9bddb89554c4ad34d4c5883d4c3b4556fd
 
                         newFilter.innerHTML = `
                             <div class="form-check">
