@@ -1,5 +1,9 @@
+@extends('layouts.header')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,26 +24,32 @@
     <div class="row">
         <div class="col-md-4">
             <div class="card p-3">
-                <div class="text-center">
-                    <h4>{{ $user->name }}</h4>
-                    <p class="text-muted">{{ $vacancy->location }}</p>
-                </div>
+            <div class="text-center">
+                <h4>{{ $user->name }}</h4>
+                <p class="text-muted">{{ $vacancy->location }}</p>
+            </div>
+            @if (!empty($user->description))
                 <p><strong>Over ons:</strong></p>
                 <p>{{ $user->description }}</p>
-                <a href="#" class="btn btn-outline-primary w-100 mt-2">Company Profile</a>
+            @endif
+            <a href="#" class="btn btn-outline-primary w-100 mt-2">Company Profile</a>
             </div>
         </div>
-
         <div class="col-md-8">
             <div class="card p-4">
                 <h3 class="card-title">{{ $vacancy->title }}</h3>
                 <h6 class="card-subtitle text-muted">{{ $vacancy->location }}</h6>
                 <hr>
-                <p><strong>Introductie:</strong></p>
-                <p>{{ $vacancy->introduction }}</p>
-                <hr>
-                <p><strong>Beschrijving:</strong></p>
-                <p>{{ $vacancy->description }}</p>
+                @if (!empty($vacancy->introduction))
+                    <p><strong>Introductie:</strong></p>
+                    <p>{{ $vacancy->introduction }}</p>
+                    <hr>
+                @endif
+
+                @if(!empty($vacancy->description))
+                    <p><strong>Beschrijving:</strong></p>
+                    <p>{{ $vacancy->description }}</p>
+                @endif
                 <div class="d-flex justify-content-between">
                     <a onclick="history.back();" class="btn btn-secondary">Terug naar vacatures</a>
                 </div>   
@@ -51,3 +61,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+@endsection
