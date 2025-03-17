@@ -11,7 +11,11 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
             <div class="container">
-                <a class="navbar-brand">Stagecentrum</a>
+                <div class="shrink-0 flex items-center">
+                <a href="{{ url('/') }}" style="color: black; text-decoration: none; font-size: 1.25rem; font-weight: bold;">
+                    Stagecentrum
+                </a>
+            </div>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" 
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
