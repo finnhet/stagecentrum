@@ -103,16 +103,8 @@
                         <label for="inputLocation" class="form-label">Locatie</label>
                         <input type="text" class="form-control" id="inputLocation" name="location" placeholder="Locatie" maxlength="50" required>
                     </div>
-<<<<<<< HEAD
-
-                    <div class="col-12 text-center mt-4">
-                        <button type="submit" class="btn text-white w-100" style="background-color: rgb(0, 0, 108);">
-                            Vacature Aanmaken
-                        </button>
-=======
                     <div class="col-12 text-center mt-4">
                         <button type="submit" class="btn btn-primary w-100" style="background-color: rgb(0, 0, 108);">Vacature Aanmaken</button>
->>>>>>> 2fae9d9bddb89554c4ad34d4c5883d4c3b4556fd
                     </div>
                 </form>
             </div>
