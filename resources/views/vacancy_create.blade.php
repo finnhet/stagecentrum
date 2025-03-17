@@ -35,10 +35,14 @@
                     <input type="hidden" name="field_id" value="{{ $selectedFieldId }}">
 
                     <h5 class="text-center mt-4">Selecteer Filters</h5>
-                    
+
+                    <div class="mb-3">
+                        <input type="text" id="filterSearch" class="form-control" placeholder="Zoek filters...">
+                    </div>
+
                     <div id="filtersContainer" class="row g-2">
                         @forelse ($filters as $filter)
-                            <div class="col-6">
+                            <div class="col-6 filter-item">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="filters[]" value="{{ $filter->id }}" id="filter{{ $filter->id }}">
                                     <label class="form-check-label" for="filter{{ $filter->id }}">{{ $filter->name }}</label>
@@ -47,6 +51,10 @@
                         @empty
                             <p class="text-center text-muted">Geen filters beschikbaar.</p>
                         @endforelse
+                    </div>
+
+                    <div class="text-center mt-2">
+                        <button type="button" id="toggleFiltersBtn" class="btn btn-link">Meer weergeven</button>
                     </div>
 
                     <div class="mt-3">
@@ -73,7 +81,7 @@
                         <input type="text" class="form-control" id="inputLocation" name="location" placeholder="Locatie" maxlength="50" required>
                     </div>
                     <div class="col-12 text-center mt-4">
-                        <button type="submit" class="btn btn-primary w-100"  style="background-color: rgb(0, 0, 108);">Vacature Aanmaken</button>
+                        <button type="submit" class="btn btn-primary w-100" style="background-color: rgb(0, 0, 108);">Vacature Aanmaken</button>
                     </div>
                 </form>
             </div>
@@ -86,7 +94,55 @@
             const addFilterBtn = document.getElementById("addFilterBtn");
             const filterInput = document.getElementById("newFilterName");
             const filtersContainer = document.getElementById("filtersContainer");
-            const fieldId = "{{ $selectedFieldId }}";
+            const filterSearch = document.getElementById("filterSearch");
+            const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
+            let filterItems = Array.from(document.querySelectorAll(".filter-item"));
+            let expanded = false;
+
+            function updateToggleButtonVisibility() {
+                toggleFiltersBtn.style.display = filterItems.length > 10 ? "block" : "none";
+            }
+
+            function resetFilterDisplay() {
+                filterItems.forEach((item, index) => {
+                    item.style.display = index < 10 ? "block" : "none";
+                });
+                updateToggleButtonVisibility();
+            }
+            resetFilterDisplay();
+
+            toggleFiltersBtn.addEventListener("click", () => {
+                expanded = !expanded;
+                filterItems.forEach((item, index) => {
+                    if (index >= 10) item.style.display = expanded ? "block" : "none";
+                });
+                toggleFiltersBtn.textContent = expanded ? "Verminder" : "Meer weergeven";
+            });
+
+            filterSearch.addEventListener("input", () => {
+                const query = filterSearch.value.toLowerCase();
+                let visibleCount = 0;
+
+                filterItems.forEach((item) => {
+                    const label = item.querySelector(".form-check-label").textContent.toLowerCase();
+                    if (label.includes(query)) {
+                        item.style.display = "block";
+                        visibleCount++;
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+
+                if (query === "") {
+                    resetFilterDisplay();
+                    expanded = false;
+                    toggleFiltersBtn.textContent = "Meer weergeven";
+                } else {
+                    toggleFiltersBtn.textContent = visibleCount > 10 ? "Verminder" : "";
+                }
+
+                updateToggleButtonVisibility();
+            });
 
             addFilterBtn.addEventListener("click", async () => {
                 let filterName = filterInput.value.trim();
@@ -96,7 +152,7 @@
                     return;
                 }
 
-                let existingFilters = Array.from(filtersContainer.querySelectorAll(".form-check-label")).map(el => el.textContent.trim().toLowerCase());
+                let existingFilters = filterItems.map(el => el.querySelector(".form-check-label").textContent.trim().toLowerCase());
                 if (existingFilters.includes(filterName.toLowerCase())) {
                     alert("Deze filter bestaat al.");
                     return;
@@ -109,14 +165,14 @@
                             "Content-Type": "application/json",
                             "X-CSRF-TOKEN": "{{ csrf_token() }}"
                         },
-                        body: JSON.stringify({ name: filterName, field_id: fieldId })
+                        body: JSON.stringify({ name: filterName, field_id: "{{ $selectedFieldId }}" })
                     });
 
                     let data = await response.json();
 
                     if (data.id) {
                         let newFilter = document.createElement("div");
-                        newFilter.classList.add("col-6", "fade-in");
+                        newFilter.classList.add("col-6", "filter-item", "fade-in");
 
                         newFilter.innerHTML = `
                             <div class="form-check">
@@ -127,6 +183,9 @@
 
                         filtersContainer.appendChild(newFilter);
                         filterInput.value = "";
+
+                        filterItems.push(newFilter);
+                        resetFilterDisplay();
 
                         setTimeout(() => newFilter.classList.remove("fade-in"), 300);
                     }
