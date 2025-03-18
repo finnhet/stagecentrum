@@ -24,15 +24,15 @@
     <div class="row">
         <div class="col-md-4">
             <div class="card p-3">
-            <div class="text-center">
-                <h4>{{ $user->name }}</h4>
-                <p class="text-muted">{{ $vacancy->location }}</p>
-            </div>
-            @if (!empty($user->description))
-                <p><strong>Over ons:</strong></p>
-                <p>{{ $user->description }}</p>
-            @endif
-            <a href="{{ url('/users') }}?id={{ $vacancy->company_id }}" class="btn btn-outline-primary w-100 mt-2">
+                <div class="text-center">
+                    <h4>{{ $user->name }}</h4>
+                    <p class="text-muted">{{ $vacancy->location }}</p>
+                </div>
+                @if (!empty($user->description))
+                    <p><strong>Over ons:</strong></p>
+                    <p>{{ $user->description }}</p>
+                @endif
+                <a href="{{ url('/users') }}?id={{ $vacancy->company_id }}" class="btn btn-outline-primary w-100 mt-2">
                     Bedrijfspagina
                 </a>    
             </div>
@@ -52,8 +52,18 @@
                     <p><strong>Beschrijving:</strong></p>
                     <p>{{ $vacancy->description }}</p>
                 @endif
+
                 <div class="d-flex justify-content-between">
                     <a onclick="history.back();" class="btn btn-secondary">Terug naar vacatures</a>
+
+                    @if (Auth::user() && Auth::user()->admin) 
+                        <form action="{{ route('vacancy.destroy', $vacancy->id) }}" method="POST"
+                              onsubmit="return confirm('Weet u zeker dat u deze vacature wilt verwijderen?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Verwijderen</button>
+                        </form>
+                    @endif
                 </div>   
             </div>
         </div>
