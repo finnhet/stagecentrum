@@ -5,7 +5,7 @@
     <h2 class="text-center mb-4 font-weight-bold">Vacatures</h2>
     <div class="row">
         <!-- Sidebar voor de filters -->
-        <div class="col-md-2 bg-light p-3 rounded">
+        <div class="col-md-2 bg-light p-3 m-10" style="border-radius: 25px; margin-bottom: 10px; box-shadow: -5px 6px 46px -7px rgb(0 0 0 / 36%);">
             <h5 class="font-weight-bold">Filters</h5>
             <form action="{{ route('vacancies.filter', ['fieldId' => $fieldId]) }}" method="GET" class="mb-4">
                 @foreach ($filters as $filter)
@@ -31,7 +31,7 @@
             <div class="row">
                 @forelse ($vacancies as $vacancy)
                     <div class="col-sm-6 col-md-4 col-lg-4 mb-4"> 
-                        <div class="card shadow-lg border-0 rounded-lg hover-effect">
+                        <div class="card shadow-lg border-0 rounded-lg hover-effect" style="height: 100%;">
                             <div class="card-body text-center">
                                 <h5 class="card-title font-weight-bold">{{ $vacancy->title }}</h5>
                                 <p class="text-muted">{{ Str::limit($vacancy->introduction, 50) }}</p>
