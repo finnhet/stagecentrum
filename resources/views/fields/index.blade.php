@@ -2,9 +2,12 @@
 
 @section('content')
 <div class="container mt-5">
-    <h2 class="text-center mb-4 font-weight-bold">Nep Tekst</h2>
+    <h2 class="text-center mb-4 font-weight-bold">Stagecentrum</h2>
     <p class="text-center text-muted mb-5">
-        blip blop splish splash wiep woep nep tekst nep tekst nep tekst nep tekst nep tekst nep tekst nep tekst
+        Welkom op Stagecentrum! Hier vind je de perfecte stage die past bij jouw studie en interesses. Blader door onze
+        verschillende categorieën en ontdek een breed aanbod aan stages bij topbedrijven. Of je nu op zoek bent naar
+        een stage in Informatica, Gezondheid, Taal en Communicatie of een andere sector, wij helpen je de juiste match
+        te vinden. Start vandaag nog jouw zoektocht en zet de eerste stap naar een succesvolle carrière!
     </p>
 
     <div class="row justify-content-center">

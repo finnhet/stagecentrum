@@ -32,7 +32,9 @@
                 <p><strong>Over ons:</strong></p>
                 <p>{{ $user->description }}</p>
             @endif
-            <a href="#" class="btn btn-outline-primary w-100 mt-2">Company Profile</a>
+            <a href="{{ url('/users') }}?id={{ $vacancy->company_id }}" class="btn btn-outline-primary w-100 mt-2">
+                    Bedrijfspagina
+                </a>    
             </div>
         </div>
         <div class="col-md-8">
