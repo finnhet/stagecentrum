@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VacancyController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\FilterController;
-
+use App\Http\Middleware\AdminMiddleware;
 
 Route::get('/', [FieldController::class, 'index']);
 
@@ -19,6 +19,22 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/users', [ProfileController::class, 'manageUsers'])
+        ->name('admin.users')
+        ->middleware('admin');
+});
+
+Route::middleware(['auth', AdminMiddleware::class])->group(function () {
+    Route::get('/admin/users', [ProfileController::class, 'manageUsers'])->name('admin.users');
+    Route::patch('/admin/users/{id}/toggle', [ProfileController::class, 'toggleAdmin'])->name('admin.toggleAdmin');
+    Route::delete('/admin/users/{id}/delete', [ProfileController::class, 'deleteUser'])->name('admin.deleteUser');
+});
+
+
+Route::delete('/filters/{id}', [FilterController::class, 'destroy'])->name('filters.destroy');
+
 
 Route::post('/filters/create', [FilterController::class, 'store'])->name('filters.store');
 
@@ -35,6 +51,8 @@ Route::delete('/vacancy/{id}', [VacancyController::class, 'destroy'])->name('vac
 Route::put('/vacancy/{id}', [VacancyController::class, 'update'])->name('vacancy.update');
 
 Route::get('/werkveld/{fieldId}/vacatures', [VacancyController::class, 'index'])->name('vacancies.byField');
+
+Route::delete('/admin/vacancies/{id}', [VacancyController::class, 'destroy'])->name('admin.deleteVacancy');
 
 Route::get('/werkveld/{fieldId}/vacatures/filter', [VacancyController::class, 'filterVacancies'])->name('vacancies.filter');
 

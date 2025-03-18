@@ -8,9 +8,37 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
+use App\Models\Vacancy;
+use App\Models\Filter;
 
 class ProfileController extends Controller
 {
+    public function manageUsers()
+    {
+        $users = User::all();
+        $vacancies = Vacancy::all();
+        $filters = Filter::all();
+        return view('admin.users', compact('users', 'vacancies', 'filters'));
+    }
+    
+
+    public function toggleAdmin($id)
+    {
+        $user = User::findOrFail($id);
+        $user->admin = !$user->admin;
+        $user->save();
+
+        return back()->with('success', 'User role updated.');
+    }
+
+    public function deleteUser($id)
+    {
+        User::findOrFail($id)->delete();
+        return back()->with('success', 'User deleted.');
+    }
+
+
     /**
      * Display the user's profile form.
      */

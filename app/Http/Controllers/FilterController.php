@@ -21,5 +21,21 @@ class FilterController extends Controller
 
         return response()->json($filter);
     }
-}
 
+    public function destroy($id)
+    {
+        $filter = Filter::findOrFail($id);
+        $filter->delete();
+
+        return response()->json(['message' => 'Filter deleted successfully']);
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $filters = Filter::where('name', 'like', "%{$query}%")->get();
+
+        return response()->json($filters);
+    }
+}

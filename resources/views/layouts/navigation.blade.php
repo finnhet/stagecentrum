@@ -18,6 +18,11 @@
                 <x-nav-link :href="route('vacancy_create')" :active="request()->routeIs('vacancy_create')">
                     {{ __('Vacature aanmaken') }}
                 </x-nav-link>
+                @if(Auth::user() && Auth::user()->admin == 1)
+                    <x-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users')">
+                        {{ __('Admin Panel') }}
+                    </x-nav-link>
+                @endif
             </div>
         </div>
 

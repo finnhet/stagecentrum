@@ -11,14 +11,13 @@
 </head>
 <body class="bg-light">
     <div class="container mt-4">
-        <h1 class="text-primary mb-4">User Details</h1>
+        <h1 class="mb-4">{{ $user->name }}</h1>
 
         @if(session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
         @if(isset($user))
-            <p><strong>Name:</strong> {{ $user->name }}</p>
             <p><strong>Email:</strong> {{ $user->email }}</p>
             <p><strong>Telefoon:</strong> {{ $user->telephone }}</p>
             <p><strong>Beschrijving:</strong> {{ $user->description }}</p>
