@@ -66,4 +66,6 @@ Route::get('/users', [VacancyController::class, 'view'])->name('users.show');
 
 Route::post('/vacancy', [VacancyController::class, 'getVacancyById']);
 
+Route::get('/home', [VacancyController::class, 'home'])->name('index');
+
 require __DIR__.'/auth.php';
