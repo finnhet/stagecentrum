@@ -19,9 +19,13 @@ class VacancyController extends Controller
         return view('vacancies', compact('vacancies', 'filters', 'fieldId'));
     }
 
-    // public function home() {
-    //     return view('/');
-    // }
+    public function allVacancies()
+    {
+        $vacancies = Vacancy::all();
+
+        return view('all_vacancies', compact('vacancies'));
+    }
+
     public function userVacancies()
     {
         $companyId = Auth::user()->id;
@@ -73,6 +77,21 @@ class VacancyController extends Controller
         return view('vacancies', compact('vacancies', 'filters', 'fieldId'));
     }
     
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('filter');
+
+        if (!$searchTerm) {
+            return redirect()->route('vacancies.all')->with('error', 'Please enter a filter name.');
+        }
+
+        $vacancies = Vacancy::whereHas('filters', function ($query) use ($searchTerm) {
+            $query->where('name', 'LIKE', '%' . $searchTerm . '%');
+        })->get();
+
+        return view('all_vacancies', compact('vacancies', 'searchTerm'));
+    }
 
     public function edit($id)
     {
