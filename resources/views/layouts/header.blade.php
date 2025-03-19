@@ -22,6 +22,11 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+                <form action="{{ route('vacancies.search') }}" method="GET" class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" name="filter" placeholder="Search for a filter..." aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         @if (Route::has('login'))
