@@ -8,7 +8,6 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <style>
-    <style>
     .navbar {
         padding: 0.8rem 1rem; 
         box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
@@ -29,8 +28,6 @@
         border: none;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     }
-</style>
-
 </style>
 <body>
     <header>
