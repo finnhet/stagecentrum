@@ -16,6 +16,14 @@
             object-fit: cover;
             border-radius: 50%;
         }
+        .filter-card {
+            background-color: rgba(0, 0, 108, 1); 
+            color: white; /* White text */
+        }
+
+        .filter-card .card-body {
+            background-color: rgba(0, 0, 108, 1); 
+        }
     </style>
 </head>
 <body>
@@ -51,7 +59,31 @@
                 @if(!empty($vacancy->description))
                     <p><strong>Beschrijving:</strong></p>
                     <p>{{ $vacancy->description }}</p>
+                    <hr>
                 @endif
+
+                @if($vacancy->filters->isNotEmpty())
+                    <p><strong>Filters:</strong></p>
+                    <div class="row">
+                        @foreach($vacancy->filters as $filter)
+                            <div class="col-md-2 col-sm-3 col-4 mb-2">
+                                <div class="card h-100 text-center filter-card">
+                                    <div class="card-body p-2">
+                                        <h6 class="card-title mb-1" style="font-weight: 700; font-size: 0.9rem; color: white; background-color: rgba(0, 0, 108, 1);">{{ $filter->name }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <p>No filters available for this vacancy.</p>
+                @endif
+
+
+
+
+
+               
 
                 <div class="d-flex justify-content-between">
                     <a onclick="history.back();" class="btn btn-secondary">Terug naar vacatures</a>
