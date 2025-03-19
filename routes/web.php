@@ -58,8 +58,6 @@ Route::get('/werkveld/{fieldId}/vacatures/filter', [VacancyController::class, 'f
 
 Route::get('/vacatures/{id}', [VacancyController::class, 'show'])->name('vacancy.show');
 
-Route::get('/vacancy/{id}', [VacancyController::class, 'show'])->name('vacancy.show');
-
 Route::get('/users', [VacancyController::class, 'view'])->name('users.show');
 
 Route::post('/vacancy', [VacancyController::class, 'getVacancyById']);
