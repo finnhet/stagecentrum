@@ -30,6 +30,20 @@ class FilterController extends Controller
         return response()->json(['message' => 'Filter deleted successfully']);
     }
 
+    public function liveSearch(Request $request)
+{
+    $query = $request->input('query');
+
+    if ($query) {
+        $filters = Filter::where('name', 'LIKE', "%{$query}%")->get();
+    } else {
+        $filters = Filter::all();
+    }
+
+    return response()->json($filters);
+}
+
+    
     public function search(Request $request)
     {
         $query = $request->input('query');

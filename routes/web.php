@@ -7,7 +7,7 @@ use App\Http\Controllers\FieldController;
 use App\Http\Controllers\FilterController;
 use App\Http\Middleware\AdminMiddleware;
 
-Route::get('/', [FieldController::class, 'index']);
+Route::get('/', [FieldController::class, 'index'])->name('index');
 
 Route::get('/dashboard', [VacancyController::class, 'userVacancies'])
     ->middleware(['auth', 'verified'])
@@ -62,6 +62,11 @@ Route::get('/users', [VacancyController::class, 'view'])->name('users.show');
 
 Route::post('/vacancy', [VacancyController::class, 'getVacancyById']);
 
-Route::get('/home', [VacancyController::class, 'home'])->name('index');
+
+
+Route::get('/filters/liveSearch', [FilterController::class, 'liveSearch'])->name('filters.liveSearch');
+
+
+// Route::get('/home', [VacancyController::class, 'home'])->name('index');
 
 require __DIR__.'/auth.php';

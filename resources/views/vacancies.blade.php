@@ -18,17 +18,19 @@
                     <input class="form-control me-2 w-100" type="search" id="livesearch" placeholder="Zoek" aria-label="Search">
                 </div>
             </nav>
-            <form action="{{ route('vacancies.filter', ['fieldId' => $fieldId]) }}" method="GET" class="mb-4">
-                @foreach ($filters as $filter)
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="filters[]" value="{{ $filter->id }}" 
-                            id="filter-{{ $filter->id }}" 
-                            {{ in_array($filter->id, request()->input('filters', [])) ? 'checked' : '' }}>
-                        <label class="form-check-label" for="filter-{{ $filter->id }}">
-                            {{ $filter->name }}
-                        </label>
-                    </div>
-                @endforeach
+            <form action="{{ route('vacancies.filter', ['fieldId' => $fieldId]) }}" method="GET" class="mb-4" id="filter-form">
+                <div id="filter-container">
+                    @foreach ($filters as $filter)
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="filters[]" value="{{ $filter->id }}" 
+                                id="filter-{{ $filter->id }}" 
+                                {{ in_array($filter->id, request()->input('filters', [])) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="filter-{{ $filter->id }}">
+                                {{ $filter->name }}
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
                 <button type="submit" class="btn btn-primary btn-sm mt-2">Filter</button>
             </form>
         </div>
@@ -59,3 +61,34 @@
     </div>
 </div>
 @endsection
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("livesearch");
+
+        searchInput.addEventListener("keyup", function () {
+            let query = this.value;
+
+            fetch("{{ route('filters.liveSearch') }}?query=" + query)
+                .then(response => response.json())
+                .then(data => {
+                    let filterContainer = document.getElementById("filter-container");
+                    filterContainer.innerHTML = ""; // Clear previous filters
+
+                    if (data.length > 0) {
+                        data.forEach(filter => {
+                            let filterItem = `
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="filters[]" value="${filter.id}" id="filter-${filter.id}">
+                                    <label class="form-check-label" for="filter-${filter.id}">${filter.name}</label>
+                                </div>
+                            `;
+                            filterContainer.innerHTML += filterItem;
+                        });
+                    } else {
+                        filterContainer.innerHTML = `<p class="text-center">Geen filters gevonden.</p>`;
+                    }
+                });
+        });
+    });
+</script>
