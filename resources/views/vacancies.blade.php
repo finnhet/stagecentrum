@@ -2,11 +2,22 @@
 
 @section('content')
 <div class="container mt-5">
-    <h2 class="text-center mb-4 font-weight-bold">Vacatures</h2>
+    <div class="d-flex align-items-center mb-4">
+        <button>
+            <a href="{{ url('/') }}">Terug</a>
+        </button>
+        <h2 class="text-center flex-grow-1 font-weight-bold">Vacatures</h2>
+    </div>
+
     <div class="row">
         <!-- Sidebar voor de filters -->
         <div class="col-md-2 bg-light p-3 m-10" style="border-radius: 25px; margin-bottom: 10px; box-shadow: -5px 6px 46px -7px rgb(0 0 0 / 36%);">
             <h5 class="font-weight-bold">Filters</h5>
+            <nav class="navbar navbar-light bg-light">
+                <div class="d-flex w-100">
+                    <input class="form-control me-2 w-100" type="search" id="livesearch" placeholder="Zoek" aria-label="Search">
+                </div>
+            </nav>
             <form action="{{ route('vacancies.filter', ['fieldId' => $fieldId]) }}" method="GET" class="mb-4">
                 @foreach ($filters as $filter)
                     <div class="form-check">
@@ -22,7 +33,7 @@
             </form>
         </div>
         
-        <!--- Hier staan de vacancies --->
+        <!--- Hier staan de vacatures --->
         <div class="col-md-10">
             @if(session('message'))
                 <p class="text-center text-danger">{{ session('message') }}</p>

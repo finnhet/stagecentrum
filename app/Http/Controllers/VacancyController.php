@@ -19,6 +19,11 @@ class VacancyController extends Controller
         return view('vacancies', compact('vacancies', 'filters', 'fieldId'));
     }
 
+    public function home() {
+        return view('/');
+    }
+    
+
     public function userVacancies()
     {
         $companyId = Auth::user()->id;
@@ -167,5 +172,7 @@ class VacancyController extends Controller
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Vacancy updated successfully!');
-    }
+    }    
 }
+
+
