@@ -32,16 +32,14 @@
 
             <h5 class="text-center mt-4">Selecteer Filters</h5>
 
-            <div class="mb-3">
-                <input type="text" id="filterSearch" class="form-control" placeholder="Zoek filters...">
-            </div>
+            <input type="text" id="filterSearch" placeholder="Zoek filters...">
 
             <div id="filtersContainer" class="row g-2">
                 @forelse ($filters as $filter)
                     <div class="col-6 filter-item">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="filters[]" value="{{ $filter->id }}" id="filter{{ $filter->id }}" {{ $vacancyFilters->contains('filter_id', $filter->id) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="filter{{ $filter->id }}">{{ $filter->name }}</label>
+                            <label class="form-check-label filter-label" for="filter{{ $filter->id }}">{{ $filter->name }}</label>
                         </div>
                     </div>
                 @empty
@@ -91,4 +89,24 @@
             </div>
         </form>
     </div>
+    <script>
+    // Prevent Enter from submitting the form
+    document.getElementById("filterSearch").addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+        }
+    });
+
+    // Live search functionality
+    document.getElementById("filterSearch").addEventListener("input", function () {
+        let searchValue = this.value.toLowerCase();
+        let filterItems = document.querySelectorAll(".filter-item");
+
+        filterItems.forEach(function (item) {
+            let label = item.querySelector(".filter-label").textContent.toLowerCase();
+            item.style.display = label.includes(searchValue) ? "" : "none";
+        });
+    });
+</script>
+
 </x-app-layout>
