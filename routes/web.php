@@ -36,7 +36,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 Route::delete('/filters/{id}', [FilterController::class, 'destroy'])->name('filters.destroy');
 
 
-Route::post('/filters/create', [FilterController::class, 'store'])->name('filters.store');
+Route::post('/filters', [FilterController::class, 'store'])->name('filters.store');
 
 Route::get('/vacancy_create', [VacancyController::class, 'create'])->name('vacancy_create');
 

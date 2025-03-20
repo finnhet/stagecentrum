@@ -89,22 +89,53 @@
     </x-app-layout>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const addFilterBtn = document.getElementById("addFilterBtn");
+            const newFilterName = document.getElementById("newFilterName");
+            const filtersContainer = document.getElementById("filtersContainer");
 
-    <style>
-        .fade-in {
-            opacity: 0;
-            transform: translateY(10px);
-            animation: fadeIn 0.3s ease-in-out forwards;
-        }
+            addFilterBtn.addEventListener("click", function () {
+                const filterValue = newFilterName.value.trim();
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+                if (!filterValue) {
+                    alert("Vul een filternaam in!"); 
+                    return;
+                }
+
+                fetch("{{ route('filters.store') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        name: filterValue,
+                        field_id: "{{ $selectedFieldId }}"
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Netwerkprobleem of serverfout");
+                    }
+                    return response.json();
+                })
+                .then(filter => {
+                    const filterDiv = document.createElement("div");
+                    filterDiv.classList.add("col-6");
+                    filterDiv.innerHTML = `
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="filters[]" value="${filter.id}" checked>
+                            <label class="form-check-label">${filter.name}</label>
+                        </div>`;
+                    filtersContainer.appendChild(filterDiv);
+
+                    newFilterName.value = "";
+                })
+                .catch(error => console.error("Error:", error));
+            });
+        });
+</script>
 </body>
-
 </html>
  
