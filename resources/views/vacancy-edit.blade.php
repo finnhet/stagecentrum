@@ -1,3 +1,5 @@
+<input type="hidden" name="field_id" value="{{ request()->get('field_id', $selectedFieldId) }}">
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -9,9 +11,43 @@
         <br>
         <h2 class="text-2xl font-bold mt-8 mb-6 text-blue-700">Pas vacature aan</h2>
 
+        <form method="GET" action="{{ route('vacancy.edit', $vacancy->id) }}">
+            <div class="mb-3">
+                <label for="fieldSelect" class="form-label">Werkveld</label>
+                <select class="form-control" id="fieldSelect" name="field_id" onchange="this.form.submit()">
+                    @foreach ($fields as $field)
+                        <option value="{{ $field->id }}" {{ (request('field_id') == NULL && $field->id == $selectedFieldId) || (request('field_id') == $field->id) ? 'selected' : '' }}>
+                            {{ $field->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </form>
+
         <form method="POST" action="{{ route('vacancy.update', ['id' => $vacancy->id]) }}" class="space-y-6">
             @csrf
             @method('PUT')
+
+            <input type="hidden" name="field_id" value="{{ request('field_id') }}">
+
+            <h5 class="text-center mt-4">Selecteer Filters</h5>
+
+            <div class="mb-3">
+                <input type="text" id="filterSearch" class="form-control" placeholder="Zoek filters...">
+            </div>
+
+            <div id="filtersContainer" class="row g-2">
+                @forelse ($filters as $filter)
+                    <div class="col-6 filter-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="filters[]" value="{{ $filter->id }}" id="filter{{ $filter->id }}" {{ $vacancyFilters->contains('filter_id', $filter->id) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="filter{{ $filter->id }}">{{ $filter->name }}</label>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-center text-muted">Geen filters beschikbaar.</p>
+                @endforelse
+            </div>
 
             <div>
                 <label for="title" class="block text-sm font-medium text-gray-700">Titel</label>

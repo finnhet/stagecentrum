@@ -9,6 +9,8 @@ use App\Models\Vacancy;
 use App\Models\Filter;
 use App\Models\Field;
 
+use Illuminate\Support\Facades\DB;
+
 class VacancyController extends Controller
 {
     public function index($fieldId)
@@ -76,7 +78,6 @@ class VacancyController extends Controller
     
         return view('vacancies', compact('vacancies', 'filters', 'fieldId'));
     }
-    
 
     public function search(Request $request)
     {
@@ -93,15 +94,26 @@ class VacancyController extends Controller
         return view('all_vacancies', compact('vacancies', 'searchTerm'));
     }
 
-    public function edit($id)
+    public function edit(Request $request)
     {
+        $id = $request->id;
+
         $vacancy = Vacancy::findOrFail($id);
         $companyId = Auth::user()->id;
+
+        $selectedFieldId = $request->field_id ? $request->field_id : $vacancy->field_id;
+        $filters = Filter::where('field_id', $selectedFieldId)->get();
+
+        $fields = Field::all();
+
+        $vacancyFilters = DB::table('vacancy_filters')
+            ->where('vacancy_id', $id)
+            ->get();
 
         if ($vacancy->company_id !== $companyId) {
             return redirect()->route('dashboard');
         } else {
-            return view('vacancy-edit', compact('vacancy'));
+            return view('vacancy-edit', compact('vacancy', 'selectedFieldId', 'fields', 'filters', 'vacancyFilters'));
         }
     }
 
@@ -167,6 +179,8 @@ class VacancyController extends Controller
         $vacancy = Vacancy::findOrFail($id);
         $vacancy->delete();
 
+        DB::table('vacancy_filters')->where('vacancy_id', $id)->delete();
+
         return redirect()->route('dashboard')->with('success', 'Vacature succesvol verwijderd.');
     }
 
@@ -177,7 +191,20 @@ class VacancyController extends Controller
             'introduction' => 'required|string|max:150',
             'description' => 'required|string|max:250',
             'location' => 'required|string|max:50',
+            'field_id' => 'nullable|exists:fields,id',
+            'filters' => 'nullable|array',
         ]);
+
+        $filterIds = $request->filters ?? [];  // Default to empty array if no filters are provided
+
+        DB::table('vacancy_filters')->where('vacancy_id', $id)->delete();
+
+        $newFilters = array_map(fn($filterId) => [
+            'vacancy_id' => $id,
+            'filter_id' => $filterId,
+        ], $filterIds);
+
+        DB::table('vacancy_filters')->insert($newFilters);
 
         $vacancy = Vacancy::findOrFail($id);
 
@@ -186,6 +213,7 @@ class VacancyController extends Controller
             'introduction' => $request->introduction,
             'description' => $request->description,
             'location' => $request->location,
+            'field_id' => $request->field_id ?? $vacancy->field_id,
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Vacancy updated successfully!');
