@@ -31,17 +31,17 @@ class FilterController extends Controller
     }
 
     public function liveSearch(Request $request)
-{
-    $query = $request->input('query');
-
-    if ($query) {
-        $filters = Filter::where('name', 'LIKE', "%{$query}%")->get();
-    } else {
-        $filters = Filter::all();
+    {
+        $query = $request->input('query');
+        $fieldId = $request->input('fieldId');
+    
+        $filters = Filter::where('field_id', $fieldId)
+            ->where('name', 'LIKE', '%' . $query . '%')
+            ->get();
+    
+        return response()->json($filters);
     }
-
-    return response()->json($filters);
-}
+    
 
     
     public function search(Request $request)

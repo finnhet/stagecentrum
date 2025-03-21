@@ -63,32 +63,39 @@
 @endsection
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const searchInput = document.getElementById("livesearch");
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("livesearch");
 
-        searchInput.addEventListener("keyup", function () {
-            let query = this.value;
+    searchInput.addEventListener("keyup", function () {
+        let query = this.value;
+        let fieldId = "{{ $fieldId }}";
 
-            fetch("{{ route('filters.liveSearch') }}?query=" + query)
-                .then(response => response.json())
-                .then(data => {
-                    let filterContainer = document.getElementById("filter-container");
-                    filterContainer.innerHTML = ""; // Clear previous filters
+        fetch("{{ route('filters.liveSearch') }}?query=" + query + "&fieldId=" + fieldId)
+            .then(response => response.json())
+            .then(data => {
+                let filterContainer = document.getElementById("filter-container");
+                let selectedFilters = new Set(
+                    [...document.querySelectorAll("input[name='filters[]']:checked")].map(el => el.value)
+                );
 
-                    if (data.length > 0) {
-                        data.forEach(filter => {
-                            let filterItem = `
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="filters[]" value="${filter.id}" id="filter-${filter.id}">
-                                    <label class="form-check-label" for="filter-${filter.id}">${filter.name}</label>
-                                </div>
-                            `;
-                            filterContainer.innerHTML += filterItem;
-                        });
-                    } else {
-                        filterContainer.innerHTML = `<p class="text-center">Geen filters gevonden.</p>`;
-                    }
-                });
-        });
+                filterContainer.innerHTML = "";
+
+                if (data.length > 0) {
+                    data.forEach(filter => {
+                        let checked = selectedFilters.has(filter.id.toString()) ? "checked" : "";
+                        let filterItem = `
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="filters[]" value="${filter.id}" id="filter-${filter.id}" ${checked}>
+                                <label class="form-check-label" for="filter-${filter.id}">${filter.name}</label>
+                            </div>
+                        `;
+                        filterContainer.innerHTML += filterItem;
+                    });
+                } else {
+                    filterContainer.innerHTML = `<p class="text-center">Geen filters gevonden.</p>`;
+                }
+            });
     });
+});
+
 </script>

@@ -94,6 +94,15 @@
             const addFilterBtn = document.getElementById("addFilterBtn");
             const newFilterName = document.getElementById("newFilterName");
             const filtersContainer = document.getElementById("filtersContainer");
+            const filterSearch = document.getElementById("filterSearch");
+
+            filterSearch.addEventListener("input", function () {
+                const searchValue = this.value.toLowerCase();
+                document.querySelectorAll(".filter-item").forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    item.style.display = text.includes(searchValue) ? "block" : "none";
+                });
+            });
 
             addFilterBtn.addEventListener("click", function () {
                 const filterValue = newFilterName.value.trim();
@@ -122,7 +131,7 @@
                 })
                 .then(filter => {
                     const filterDiv = document.createElement("div");
-                    filterDiv.classList.add("col-6");
+                    filterDiv.classList.add("col-6", "filter-item");
                     filterDiv.innerHTML = `
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="filters[]" value="${filter.id}" checked>
@@ -135,7 +144,6 @@
                 .catch(error => console.error("Error:", error));
             });
         });
-</script>
+    </script>
 </body>
 </html>
- 
