@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __('Als u uw account verwijderd, word alle data permanent verwijderd.') }}
+            {{ __('Als u uw account verwijdert, wordt alle data permanent verwijderd.') }}
         </p>
     </header>
 

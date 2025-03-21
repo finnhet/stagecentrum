@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Bewerk uw account's profiel informatie en email adres.") }}
+            {{ __("Bewerk de profielinformatie en het e-mailadres van uw account.") }}
         </p>
     </header>
 
