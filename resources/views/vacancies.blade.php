@@ -2,21 +2,21 @@
 
 @section('content')
 <div class="container mt-5">
-    <div class="d-flex align-items-center mb-4">
-        <button>
-            <a href="{{ url('/') }}">Terug</a>
-        </button>
-        <h2 class="text-center flex-grow-1 font-weight-bold">Vacatures</h2>
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <a href="{{ url ('/') }}" class="btn btn-secondary">Terug</a>
+        <div class="text-center flex-grow-1">
+            <h2 class="font-weight-bold mb-0">Vacatures</h2>
+            <h4 class="text-muted">{{ $field->name }}</h4>
+        </div>
+        <div style="width: 50px;"></div>
     </div>
 
     <div class="row">
         <!-- Sidebar voor de filters -->
-        <div class="col-md-2 bg-light p-3 m-10" style="border-radius: 25px; margin-bottom: 10px; box-shadow: -5px 6px 46px -7px rgb(0 0 0 / 36%);">
+        <div class="col-md-2 bg-light p-3" style="border-radius: 25px; box-shadow: -5px 6px 46px -7px rgb(0 0 0 / 36%);">
             <h5 class="font-weight-bold">Filters</h5>
             <nav class="navbar navbar-light bg-light">
-                <div class="d-flex w-100">
-                    <input class="form-control me-2 w-100" type="search" id="livesearch" placeholder="Zoek" aria-label="Search">
-                </div>
+                <input class="form-control me-2 w-100" type="search" id="livesearch" placeholder="Zoek" aria-label="Search">
             </nav>
             <form action="{{ route('vacancies.filter', ['fieldId' => $fieldId]) }}" method="GET" class="mb-4" id="filter-form">
                 <div id="filter-container">
@@ -31,11 +31,11 @@
                         </div>
                     @endforeach
                 </div>
-                <button type="submit" class="btn btn-primary btn-sm mt-2">Filter</button>
+                <button type="submit" class="btn btn-primary btn-sm mt-2 w-100">Filter</button>
             </form>
         </div>
         
-        <!--- Hier staan de vacatures --->
+        <!-- Vacatures -->
         <div class="col-md-10">
             @if(session('message'))
                 <p class="text-center text-danger">{{ session('message') }}</p>
@@ -44,7 +44,7 @@
             <div class="row">
                 @forelse ($vacancies as $vacancy)
                     <div class="col-sm-6 col-md-4 col-lg-4 mb-4"> 
-                        <div class="card shadow-lg border-0 rounded-lg hover-effect" style="height: 100%;">
+                        <div class="card shadow-lg border-0 rounded-lg hover-effect h-100">
                             <div class="card-body text-center">
                                 <h5 class="card-title font-weight-bold">{{ $vacancy->title }}</h5>
                                 <p class="text-muted">{{ Str::limit($vacancy->introduction, 50) }}</p>
@@ -97,5 +97,4 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 });
-
 </script>

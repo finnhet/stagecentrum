@@ -50,7 +50,7 @@ Route::delete('/vacancy/{id}', [VacancyController::class, 'destroy'])->name('vac
 
 Route::put('/vacancy/{id}', [VacancyController::class, 'update'])->name('vacancy.update');
 
-Route::get('/werkveld/{fieldId}/vacatures', [VacancyController::class, 'index'])->name('vacancies.byField');
+Route::get('/werkveld/{fieldId}/vacatures', [VacancyController::class, 'index'])->name('vacancies.byField');    
 
 Route::delete('/admin/vacancies/{id}', [VacancyController::class, 'destroy'])->name('admin.deleteVacancy');
 

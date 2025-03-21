@@ -86,11 +86,13 @@
                
 
                 <div class="d-flex justify-content-between">
-                    <a onclick="history.back();" class="btn btn-secondary">Terug naar vacatures</a>
+                    <a href="{{ route('vacancies.byField', ['fieldId' => $vacancy->field_id]) }}" class="btn btn-secondary">
+                        Terug naar vacatures
+                    </a>
 
                     @if (Auth::user() && Auth::user()->admin) 
                         <form action="{{ route('vacancy.destroy', $vacancy->id) }}" method="POST"
-                              onsubmit="return confirm('Weet u zeker dat u deze vacature wilt verwijderen?');">
+                            onsubmit="return confirm('Weet u zeker dat u deze vacature wilt verwijderen?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Verwijderen</button>

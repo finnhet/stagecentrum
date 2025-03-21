@@ -17,8 +17,8 @@ class VacancyController extends Controller
     {
         $filters = Filter::where('field_id', $fieldId)->get();
         $vacancies = Vacancy::where('field_id', $fieldId)->get();
-
-        return view('vacancies', compact('vacancies', 'filters', 'fieldId'));
+        $field = Field::where('id', $fieldId)->first();
+        return view('vacancies', compact('vacancies', 'filters', 'fieldId', 'field'));
     }
 
     public function allVacancies()
@@ -41,8 +41,9 @@ class VacancyController extends Controller
         $companyId = $request->query('id');
         $user = User::where('id', $companyId)->first();
         $vacancies = Vacancy::where('company_id', $companyId)->get();
-
-        return view('users.show', compact('user', 'vacancies'));
+        $fieldId = Vacancy::where('company_id', $companyId)->value('field_id');
+        $workfield = Field::where('id', $fieldId)->value('name');
+        return view('users.show', compact('user', 'vacancies', 'workfield'));
     }
 
     public function vacanciesByField($fieldId, Request $request)
