@@ -88,7 +88,7 @@
                         @endforeach
                     </div>
                 @else
-                    <p>No filters available for this vacancy.</p>
+                    <p>Geen filters beschikbaar voor deze vacature.</p>
                 @endif
 
                 <div class="d-flex justify-content-between">

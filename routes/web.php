@@ -54,6 +54,8 @@ Route::get('/werkveld/{fieldId}/vacatures', [VacancyController::class, 'index'])
 
 Route::delete('/admin/vacancies/{id}', [VacancyController::class, 'destroy'])->name('admin.deleteVacancy');
 
+Route::post('/vacancy/{id}/toggle-active', [VacancyController::class, 'toggleActive'])->name('vacancy.toggleActive');
+
 Route::get('/vacancies/all', [VacancyController::class, 'allVacancies'])->name('vacancies.all');
 
 Route::get('/vacancies/search', [VacancyController::class, 'search'])->name('vacancies.search');

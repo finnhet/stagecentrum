@@ -16,22 +16,21 @@ class VacancyController extends Controller
     public function index($fieldId)
     {
         $filters = Filter::where('field_id', $fieldId)->get();
-        $vacancies = Vacancy::where('field_id', $fieldId)->get();
+        $vacancies = Vacancy::where('field_id', $fieldId)->where('active', 1)->get();
         $field = Field::where('id', $fieldId)->first();
         return view('vacancies', compact('vacancies', 'filters', 'fieldId', 'field'));
     }
 
     public function allVacancies()
     {
-        $vacancies = Vacancy::all();
-
+        $vacancies = Vacancy::where('active', 1)->get();
         return view('all_vacancies', compact('vacancies'));
     }
 
     public function userVacancies()
     {
         $companyId = Auth::user()->id;
-        $vacancies = Vacancy::where('company_id', $companyId)->get();
+        $vacancies = Vacancy::where('company_id', $companyId)->where('active', 1)->get();
 
         return view('dashboard', compact('vacancies'));
     }
@@ -40,16 +39,17 @@ class VacancyController extends Controller
     {
         $companyId = $request->query('id');
         $user = User::where('id', $companyId)->first();
-        $vacancies = Vacancy::where('company_id', $companyId)->get();
+        $vacancies = Vacancy::where('company_id', $companyId)->where('active', 1)->get();
         $fieldId = Vacancy::where('company_id', $companyId)->value('field_id');
         $workfield = Field::where('id', $fieldId)->value('name');
         return view('users.show', compact('user', 'vacancies', 'workfield'));
     }
 
+
     public function vacanciesByField($fieldId, Request $request)
     {
         $filters = Filter::where('field_id', $fieldId)->get();
-        $vacancies = Vacancy::where('field_id', $fieldId);
+        $vacancies = Vacancy::where('field_id', $fieldId)->where('active', 1);
 
         if ($request->has('filter')) {
             $vacancies->whereHas('filters', function ($query) use ($request) {
@@ -58,27 +58,29 @@ class VacancyController extends Controller
         }
 
         $vacancies = $vacancies->get();
-
         return view('vacancies', compact('vacancies', 'filters', 'fieldId'));
     }
+
 
     public function filterVacancies(Request $request, $fieldId)
     {
         $selectedFilters = $request->input('filters', []);
         $filters = Filter::where('field_id', $fieldId)->get();
-    
+
         if (!empty($selectedFilters)) {
             $vacancies = Vacancy::where('field_id', $fieldId)
+                ->where('active', 1)
                 ->whereHas('filters', function ($query) use ($selectedFilters) {
                     $query->whereIn('filters.id', $selectedFilters);
                 }, '=', count($selectedFilters))
                 ->get();
         } else {
-            $vacancies = Vacancy::where('field_id', $fieldId)->get();
+            $vacancies = Vacancy::where('field_id', $fieldId)->where('active', 1)->get();
         }
-    
+
         return view('vacancies', compact('vacancies', 'filters', 'fieldId'));
     }
+
 
     public function search(Request $request)
     {
@@ -90,7 +92,9 @@ class VacancyController extends Controller
 
         $vacancies = Vacancy::whereHas('filters', function ($query) use ($searchTerm) {
             $query->where('name', 'LIKE', '%' . $searchTerm . '%');
-        })->get();
+        })
+        ->where('active', 1)
+        ->get();
 
         return view('all_vacancies', compact('vacancies', 'searchTerm'));
     }
@@ -157,8 +161,6 @@ class VacancyController extends Controller
         return redirect()->route('dashboard')->with('success', 'Vacancy successfully created.');
     }
     
-
-
     public function getVacancyById(Request $request)
     {
         $request->validate([
@@ -172,7 +174,7 @@ class VacancyController extends Controller
 
     public function show($id)
     {
-        $vacancy = Vacancy::with('field')->findOrFail($id);
+        $vacancy = Vacancy::with('field')->where('id', $id)->where('active', 1)->firstOrFail();
         $user = User::where('id', $vacancy->company_id)->first();
 
         return view('vacancy', compact('vacancy', 'user'));
@@ -188,6 +190,15 @@ class VacancyController extends Controller
 
     return redirect()->route('dashboard')->with('success', 'Vacancy successfully deleted.');
 }
+
+    public function toggleActive($id)
+    {
+        $vacancy = Vacancy::findOrFail($id);
+        $vacancy->active = !$vacancy->active;
+        $vacancy->save();
+
+        return redirect()->route('dashboard')->with('success', 'Vacature status bijgewerkt!');
+    }
 
 
     public function update(Request $request, $id)

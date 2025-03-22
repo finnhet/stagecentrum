@@ -17,6 +17,7 @@ class Vacancy extends Model
         'location',
         'company_id',
         'field_id',
+        'active'
     ];
 
     public function filters()
