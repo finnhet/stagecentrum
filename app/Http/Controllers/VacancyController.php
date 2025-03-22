@@ -130,7 +130,7 @@ class VacancyController extends Controller
     public function store(Request $request)
     {
         $companyId = Auth::user()->id;
-
+    
         $request->validate([
             'title' => 'required|string|max:255',
             'introduction' => 'required|string|max:255',
@@ -138,7 +138,7 @@ class VacancyController extends Controller
             'location' => 'required|string|max:255',
             'field_id' => 'required|exists:fields,id',
         ]);
-
+    
         $vacancy = Vacancy::create([
             'title' => $request->title,
             'introduction' => $request->introduction,
@@ -147,13 +147,16 @@ class VacancyController extends Controller
             'field_id' => $request->field_id,
             'company_id' => $companyId,
         ]);
-
+    
         if ($request->has('filters')) {
             $vacancy->filters()->attach($request->filters);
         }
-
-        return redirect()->route('dashboard')->with('success', 'Vacature succesvol aangemaakt.');
+    
+        $this->deleteUnusedFilters();
+    
+        return redirect()->route('dashboard')->with('success', 'Vacancy successfully created.');
     }
+    
 
 
     public function getVacancyById(Request $request)
@@ -177,14 +180,15 @@ class VacancyController extends Controller
 
 
     public function destroy($id)
-    {
-        $vacancy = Vacancy::findOrFail($id);
-        $vacancy->delete();
+{
+    $vacancy = Vacancy::findOrFail($id);
+    $vacancy->filters()->detach();
+    $vacancy->delete(); 
+    $this->deleteUnusedFilters();
 
-        DB::table('vacancy_filters')->where('vacancy_id', $id)->delete();
+    return redirect()->route('dashboard')->with('success', 'Vacancy successfully deleted.');
+}
 
-        return redirect()->route('dashboard')->with('success', 'Vacature succesvol verwijderd.');
-    }
 
     public function update(Request $request, $id)
     {
@@ -196,20 +200,8 @@ class VacancyController extends Controller
             'field_id' => 'nullable|exists:fields,id',
             'filters' => 'nullable|array',
         ]);
-
-        $filterIds = $request->filters ?? [];  // Default to empty array if no filters are provided
-
-        DB::table('vacancy_filters')->where('vacancy_id', $id)->delete();
-
-        $newFilters = array_map(fn($filterId) => [
-            'vacancy_id' => $id,
-            'filter_id' => $filterId,
-        ], $filterIds);
-
-        DB::table('vacancy_filters')->insert($newFilters);
-
+    
         $vacancy = Vacancy::findOrFail($id);
-
         $vacancy->update([
             'title' => $request->title,
             'introduction' => $request->introduction,
@@ -217,9 +209,23 @@ class VacancyController extends Controller
             'location' => $request->location,
             'field_id' => $request->field_id ?? $vacancy->field_id,
         ]);
+    
+        $vacancy->filters()->sync($request->filters ?? []);
+    
+        $this->deleteUnusedFilters();
+    
+        return redirect()->route('dashboard')->with('success', 'Vacancy updated successfully.');
+    }
 
-        return redirect()->route('dashboard')->with('success', 'Vacancy updated successfully!');
-    }    
+    private function deleteUnusedFilters()
+    {
+        $unusedFilters = Filter::whereDoesntHave('vacancies')->get();
+    
+        foreach ($unusedFilters as $filter) {
+            $filter->delete();
+        }
+    }
+      
 }
 
 

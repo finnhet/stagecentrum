@@ -91,59 +91,84 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const addFilterBtn = document.getElementById("addFilterBtn");
-            const newFilterName = document.getElementById("newFilterName");
-            const filtersContainer = document.getElementById("filtersContainer");
-            const filterSearch = document.getElementById("filterSearch");
+        const addFilterBtn = document.getElementById("addFilterBtn");
+        const newFilterName = document.getElementById("newFilterName");
+        const filtersContainer = document.getElementById("filtersContainer");
+        const filterSearch = document.getElementById("filterSearch");
+        const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
 
-            filterSearch.addEventListener("input", function () {
-                const searchValue = this.value.toLowerCase();
-                document.querySelectorAll(".filter-item").forEach(item => {
-                    const text = item.textContent.toLowerCase();
-                    item.style.display = text.includes(searchValue) ? "block" : "none";
-                });
-            });
+        let allFilters = Array.from(filtersContainer.children);
+        
+        function updateFilterVisibility() {
+            allFilters = Array.from(filtersContainer.children);
+            if (allFilters.length > 10) {
+                toggleFiltersBtn.style.display = "inline-block";
+                allFilters.slice(10).forEach(filter => filter.style.display = "none");
+            } else {
+                toggleFiltersBtn.style.display = "none";
+            }
+        }
 
-            addFilterBtn.addEventListener("click", function () {
-                const filterValue = newFilterName.value.trim();
+        updateFilterVisibility();
 
-                if (!filterValue) {
-                    alert("Vul een filternaam in!"); 
-                    return;
-                }
-
-                fetch("{{ route('filters.store') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify({
-                        name: filterValue,
-                        field_id: "{{ $selectedFieldId }}"
-                    })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Netwerkprobleem of serverfout");
-                    }
-                    return response.json();
-                })
-                .then(filter => {
-                    const filterDiv = document.createElement("div");
-                    filterDiv.classList.add("col-6", "filter-item");
-                    filterDiv.innerHTML = `
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="filters[]" value="${filter.id}" checked>
-                            <label class="form-check-label">${filter.name}</label>
-                        </div>`;
-                    filtersContainer.appendChild(filterDiv);
-
-                    newFilterName.value = "";
-                })
-                .catch(error => console.error("Error:", error));
+        filterSearch.addEventListener("input", function () {
+            const searchValue = this.value.toLowerCase();
+            allFilters.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(searchValue) ? "block" : "none";
             });
         });
-    </script>
+
+        toggleFiltersBtn.addEventListener("click", function () {
+            if (toggleFiltersBtn.textContent === "Meer weergeven") {
+                allFilters.slice(10).forEach(filter => filter.style.display = "block");
+                toggleFiltersBtn.textContent = "Minder weergeven";
+            } else {
+                allFilters.slice(10).forEach(filter => filter.style.display = "none");
+                toggleFiltersBtn.textContent = "Meer weergeven";
+            }
+        });
+
+        addFilterBtn.addEventListener("click", function () {
+            const filterValue = newFilterName.value.trim();
+
+            if (!filterValue) {
+                alert("Vul een filternaam in!");
+                return;
+            }
+
+            fetch("{{ route('filters.store') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({
+                    name: filterValue,
+                    field_id: "{{ $selectedFieldId }}"
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Netwerkprobleem of serverfout");
+                }
+                return response.json();
+            })
+            .then(filter => {
+                const filterDiv = document.createElement("div");
+                filterDiv.classList.add("col-6", "filter-item");
+                filterDiv.innerHTML = `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="filters[]" value="${filter.id}" checked>
+                        <label class="form-check-label">${filter.name}</label>
+                    </div>`;
+                filtersContainer.appendChild(filterDiv);
+                newFilterName.value = "";
+                updateFilterVisibility();
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    });
+</script>
 </body>
 </html>
