@@ -18,11 +18,15 @@
         }
         .filter-card {
             background-color: rgba(0, 0, 108, 1); 
-            color: white; /* White text */
+            color: white;
         }
-
         .filter-card .card-body {
-            background-color: rgba(0, 0, 108, 1); 
+            background-color: rgba(0, 0, 108, 1);
+        }
+        .field-text {
+            font-size: 0.85rem;
+            color: gray;
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -48,8 +52,14 @@
         <div class="col-md-8">
             <div class="card p-4">
                 <h3 class="card-title">{{ $vacancy->title }}</h3>
+                
+                @if($vacancy->field)
+                    <p class="field-text">Werkveld: {{ $vacancy->field->name }}</p>
+                @endif
+
                 <h6 class="card-subtitle text-muted">{{ $vacancy->location }}</h6>
                 <hr>
+
                 @if (!empty($vacancy->introduction))
                     <p><strong>Introductie:</strong></p>
                     <p>{{ $vacancy->introduction }}</p>
@@ -69,7 +79,9 @@
                             <div class="col-md-2 col-sm-3 col-4 mb-2">
                                 <div class="card h-100 text-center filter-card">
                                     <div class="card-body p-2">
-                                        <h6 class="card-title mb-1" style="font-weight: 700; font-size: 0.9rem; color: white; background-color: rgba(0, 0, 108, 1);">{{ $filter->name }}</h6>
+                                        <h6 class="card-title mb-1" style="font-weight: 700; font-size: 0.9rem; color: white;">
+                                            {{ $filter->name }}
+                                        </h6>
                                     </div>
                                 </div>
                             </div>
@@ -78,12 +90,6 @@
                 @else
                     <p>No filters available for this vacancy.</p>
                 @endif
-
-
-
-
-
-               
 
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('vacancies.byField', ['fieldId' => $vacancy->field_id]) }}" class="btn btn-secondary">

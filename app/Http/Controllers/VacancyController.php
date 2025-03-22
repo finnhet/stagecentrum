@@ -169,11 +169,12 @@ class VacancyController extends Controller
 
     public function show($id)
     {
-        $vacancy = Vacancy::findOrFail($id);
+        $vacancy = Vacancy::with('field')->findOrFail($id);
         $user = User::where('id', $vacancy->company_id)->first();
 
         return view('vacancy', compact('vacancy', 'user'));
     }
+
 
     public function destroy($id)
     {
