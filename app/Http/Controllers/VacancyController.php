@@ -30,7 +30,7 @@ class VacancyController extends Controller
     public function userVacancies()
     {
         $companyId = Auth::user()->id;
-        $vacancies = Vacancy::where('company_id', $companyId)->where('active', 1)->get();
+        $vacancies = Vacancy::where('company_id', $companyId)->get();
 
         return view('dashboard', compact('vacancies'));
     }
